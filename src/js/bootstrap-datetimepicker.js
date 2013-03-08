@@ -77,7 +77,7 @@
         icon.removeClass(this.timeIcon);
         icon.addClass(this.dateIcon);
       }
-      this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds)).appendTo('body');
+      this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds)).insertAfter(this.$element);
       this.minViewMode = options.minViewMode||this.$element.data('date-minviewmode')||0;
       if (typeof this.minViewMode === 'string') {
         switch (this.minViewMode) {
@@ -261,7 +261,7 @@
 
     place: function(){
       var offset = this.component ? this.component.offset() : this.$element.offset();
-      this.widget.css({
+      this.widget.offset({
         top: offset.top + this.height,
         left: offset.left
       });
