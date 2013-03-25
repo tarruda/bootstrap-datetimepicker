@@ -54,7 +54,8 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
-      if (this.$element.is('.input-append') || this.$element.is('.input-prepend'))
+       if (this.$element.is('.input-append') || this.$element.is('.input-prepend') || 
+            this.$element.parent().is('.input-append') || this.$element.parent().is('.input-prepend'))
           this.component = this.$element.find('.add-on');
       this.format = options.format;
       if (!this.format) {
