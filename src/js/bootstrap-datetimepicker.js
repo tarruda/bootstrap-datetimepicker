@@ -828,6 +828,9 @@
         } else if (property === 'Period12') {
           if (d.getUTCHours() >= 12) return 'PM';
           else return 'AM';
+        } else if (property === 'TimeZone') {
+          var offset = Math.round(-1 * d.getTimezoneOffset() / 60 * 100);
+          return (offset >= 0 ? "+" : "-") + padLeft(Math.abs(offset).toString(), 4, '0');
         } else {
           methodName = 'get' + property;
           rv = d[methodName]();
@@ -870,12 +873,15 @@
     },
 
     _finishParsingDate: function(parsed) {
-      var year, month, date, hours, minutes, seconds, milliseconds;
+      var timezone, year, month, date, hours, minutes, seconds, milliseconds;
       year = parsed.UTCFullYear;
       if (parsed.UTCYear) year = 2000 + parsed.UTCYear;
       if (!year) year = 1970;
       if (parsed.UTCMonth) month = parsed.UTCMonth - 1;
       else month = 0;
+      timezone = parseInt(parsed.TimeZone) || 0;
+      if (parsed.TimeZone.length >= 5) timezone = timezone / 100.0;
+      else if (parsed.TimeZone.length >= 4) timezone = timezone / 10.0;
       date = parsed.UTCDate || 1;
       hours = parsed.UTCHours || 0;
       minutes = parsed.UTCMinutes || 0;
@@ -891,7 +897,7 @@
           hours = hours % 12;
         }
       }
-      return UTCDate(year, month, date, hours, minutes, seconds, milliseconds);
+      return UTCDate(year, month, date, hours + timezone, minutes, seconds, milliseconds);
     },
 
     _compileFormat: function () {
@@ -1101,7 +1107,8 @@
     ss: {property: 'UTCSeconds', getPattern: function() {return '(0?[0-9]|[1-5][0-9])\\b';}},
     ms: {property: 'UTCMilliseconds', getPattern: function() {return '([0-9]{1,3})\\b';}},
     HH: {property: 'Hours12', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
-    PP: {property: 'Period12', getPattern: function() {return '(AM|PM|am|pm|Am|aM|Pm|pM)\\b';}}
+    PP: {property: 'Period12', getPattern: function() {return '(AM|PM|am|pm|Am|aM|Pm|pM)\\b';}},
+    TZ: {property: 'TimeZone', getPattern: function () { return '([+\\-]?[0-1][0-9]{1,3})\\b'; } }
   };
 
   var keys = [];
