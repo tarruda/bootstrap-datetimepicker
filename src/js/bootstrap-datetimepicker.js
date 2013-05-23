@@ -54,7 +54,7 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
-      if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
+      if (this.$element.is('.input-append') || this.$element.is('.input-prepend'))
           this.component = this.$element.find('.add-on');
       this.format = options.format;
       if (!this.format) {
@@ -69,13 +69,13 @@
       if (this.pickTime) {
         if (icon && icon.length) this.timeIcon = icon.data('time-icon');
         if (!this.timeIcon) this.timeIcon = 'icon-time';
-        icon.addClass(this.timeIcon);
+        icon && icon.addClass(this.timeIcon);
       }
       if (this.pickDate) {
         if (icon && icon.length) this.dateIcon = icon.data('date-icon');
         if (!this.dateIcon) this.dateIcon = 'icon-calendar';
-        icon.removeClass(this.timeIcon);
-        icon.addClass(this.dateIcon);
+        icon && icon.removeClass(this.timeIcon);
+        icon && icon.addClass(this.dateIcon);
       }
       this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds, options.collapse)).appendTo('body');
       this.minViewMode = options.minViewMode||this.$element.data('date-minviewmode')||0;
