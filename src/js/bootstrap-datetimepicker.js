@@ -851,10 +851,17 @@
           else return 'AM';
         } else {
           methodName = 'get' + property;
-          rv = d[methodName]();
+          if (methodName == 'getUTCYear') {
+            rv = d['getUTCFullYear']();
+          } else {
+            rv = d[methodName]();
+          }
         }
         if (methodName === 'getUTCMonth') rv = rv + 1;
-        if (methodName === 'getUTCYear') rv = rv + 1900 - 2000;
+        if (methodName === 'getUTCYear') {
+          rv = rv.toString();
+          rv = rv.length > 2 ? rv.substring(rv.length - 2, rv.length) : rv;
+        }
         return padLeft(rv.toString(), len, '0');
       });
     },
