@@ -4,7 +4,7 @@ layout: layout
 author: Thiago de Arruda
 authorUrl: https://github.com/tarruda
 projectName: bootstrap-datetimepicker
-projectDescription: Date/Time Picker for Twitter Boostrap 
+projectDescription: Date/Time Picker for Twitter Bootstrap 
 zipDownloadUrl: assets/dist/bootstrap-datetimepicker-0.0.11.zip
 githubUrl: https://github.com/tarruda/bootstrap-datetimepicker
 css:
