@@ -292,7 +292,6 @@
       }
 
       if ($window.height() < this.$element.offset().top + this.$element.height() + this.widget.outerHeight()) {
-        console.log(this.widget.outerHeight());
         offset.top = this.$element.offset().top - this.widget.outerHeight() - 2;
         offset.bottom = 'auto';
         this.widget.addClass('pull-bottom');
