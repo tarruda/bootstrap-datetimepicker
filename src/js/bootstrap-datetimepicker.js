@@ -293,10 +293,16 @@
 
       if ($window.height() < this.$element.offset().top + this.$element.height() + this.widget.outerHeight()) {
         offset.top = this.$element.offset().top - this.widget.outerHeight() - 2;
-        offset.bottom = 'auto';
-        this.widget.addClass('pull-bottom');
+        if (260 == this.widget.outerHeight()) {
+          this.widget.removeClass('pull-bottom-time');
+          this.widget.addClass('pull-bottom-calendar');
+        } else {
+          this.widget.removeClass('pull-bottom-calendar');
+          this.widget.addClass('pull-bottom-time');
+        }
       } else {
-        this.widget.removeClass('pull-bottom');
+          this.widget.removeClass('pull-bottom-calendar');
+          this.widget.removeClass('pull-bottom-time');
       }
 
       this.widget.css({
