@@ -114,7 +114,7 @@
       this.fillDow();
       this.fillMonths();
       this.fillHours();
-      this.fillMinutes();
+      this.fillMinutes(options.timeRows, options.timeCols, options.timeInterval);
       this.fillSeconds();
       this.update();
       this.showMode();
@@ -504,18 +504,18 @@
       table.html(html);
     },
 
-    fillMinutes: function() {
+    fillMinutes: function(rows, cols, interval) {
       var table = this.widget.find(
         '.timepicker .timepicker-minutes table');
       table.parent().hide();
       var html = '';
       var current = 0;
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < rows; i++) {
         html += '<tr>';
-        for (var j = 0; j < 4; j += 1) {
+        for (var j = 0; j < cols; j += 1) {
           var c = current.toString();
           html += '<td class="minute">' + padLeft(c, 2, '0') + '</td>';
-          current += 3;
+          current += interval;
         }
         html += '</tr>';
       }
@@ -1109,7 +1109,10 @@
     pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
-    collapse: true
+    collapse: true,
+    timeRows: 5,
+    timeCols: 4,
+    timeInterval: 3
   };
   $.fn.datetimepicker.Constructor = DateTimePicker;
   var dpgId = 0;
