@@ -996,14 +996,14 @@
           });
         }
       } else {
-        this.$element.on({
+        this.getTargetEls().on({
           'change': $.proxy(this.change, this)
-        }, 'input');
+        });
         if (this.options.maskInput) {
-          this.$element.on({
+          this.getTargetEls().on({
             'keydown': $.proxy(this.keydown, this),
             'keypress': $.proxy(this.keypress, this)
-          }, 'input');
+          });
         }
         if (this.component){
           this.component.on('click', $.proxy(this.show, this));
@@ -1041,11 +1041,11 @@
           });
         }
       } else {
-        this.$element.off({
+        this.getTargetEls().off({
           'change': this.change
-        }, 'input');
+        });
         if (this.options.maskInput) {
-          this.$element.off({
+          this.getTargetEls().off({
             'keydown': this.keydown,
             'keypress': this.keypress
           }, 'input');
