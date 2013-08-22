@@ -40,7 +40,7 @@ suite 'issue', ->
     # open datetimepicker
     @addon.click()
     # select a date
-    @widget.find('.datepicker .day:contains(25)').click()
+    @widget.find('.datetimepicker .day:contains(25)').click()
     # switch to time picker
     @widget.find('.picker-switch').click()
     # click on the selected 'minutes' span
@@ -75,6 +75,6 @@ suite 'issue', ->
     # open datetimepicker
     @addon.click()
     # select a date
-    @widget.find('.datepicker .day:contains(25)').click()
+    @widget.find('.datetimepicker .day:contains(25)').click()
     expect(@input.val()).to.equal('05/25/1905 21:52:14 0')
 

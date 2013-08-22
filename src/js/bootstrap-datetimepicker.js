@@ -824,7 +824,7 @@
         this.viewMode = Math.max(this.minViewMode, Math.min(
           2, this.viewMode + dir));
       }
-      this.widget.find('.datepicker > div').hide().filter(
+      this.widget.find('.datetimepicker > div').hide().filter(
         '.datepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
     },
 
@@ -954,7 +954,7 @@
     _attachDatePickerEvents: function() {
       var self = this;
       // this handles date picker clicks
-      this.widget.on('click', '.datepicker *', $.proxy(this.click, this));
+      this.widget.on('click', '.datetimepicker *', $.proxy(this.click, this));
       // this handles time picker clicks
       this.widget.on('click', '[data-action]', $.proxy(this.doAction, this));
       this.widget.on('mousedown', $.proxy(this.stopEvent, this));
@@ -1015,7 +1015,7 @@
     },
 
     _detachDatePickerEvents: function() {
-      this.widget.off('click', '.datepicker *', this.click);
+      this.widget.off('click', '.datetimepicker *', this.click);
       this.widget.off('click', '[data-action]');
       this.widget.off('mousedown', this.stopEvent);
       if (this.pickDate && this.pickTime) {
@@ -1150,7 +1150,7 @@
         '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
           '<ul>' +
             '<li' + (collapse ? ' class="collapse in"' : '') + '>' +
-              '<div class="datepicker">' +
+              '<div class="datetimepicker">' +
                 DPGlobal.template +
               '</div>' +
             '</li>' +
@@ -1174,7 +1174,7 @@
     } else {
       return (
         '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
-          '<div class="datepicker">' +
+          '<div class="datetimepicker">' +
             DPGlobal.template +
           '</div>' +
         '</div>'
