@@ -1,6 +1,10 @@
 describe 'datetimepicker', ->
 
-  beforeEach setupDateTimePicker()
+  beforeEach setupDateTimePicker({
+    hourStep: 2,
+    minuteStep: 5,
+    secondStep: 15
+  })
 
   afterEach teardownDateTimePicker()
 
@@ -118,29 +122,29 @@ describe 'datetimepicker', ->
           .to.be.true
         done()
 
-  it 'increments/decrements hour', ->
+  it 'adds/subtracts the hours step', ->
     @addon.click()
     @widget.find('.picker-switch a').click()
     @timeWidget.find('[data-action=incrementHours]').click()
-    @dateShouldEqual 1905, 4, 1, 22, 52, 14
+    @dateShouldEqual 1905, 4, 1, 23, 52, 14
     @timeWidget.find('[data-action=decrementHours]').click()
     @dateShouldEqual 1905, 4, 1, 21, 52, 14
 
-  it 'increments/decrements minutes', ->
+  it 'adds/subtracts the minutes step', ->
     @addon.click()
     @widget.find('.picker-switch a').click()
     @timeWidget.find('[data-action=incrementMinutes]').click()
     # 15 minutes step is the default
-    @dateShouldEqual 1905, 4, 1, 21, 53, 14
+    @dateShouldEqual 1905, 4, 1, 21, 57, 14
     @timeWidget.find('[data-action=decrementMinutes]').click()
     @dateShouldEqual 1905, 4, 1, 21, 52, 14
 
-  it 'increments/decrements minutes', ->
+  it 'adds/subtracts the seconds step', ->
     @addon.click()
     @widget.find('.picker-switch a').click()
     @timeWidget.find('[data-action=incrementSeconds]').click()
     # 30 seconds step is the default
-    @dateShouldEqual 1905, 4, 1, 21, 52, 15
+    @dateShouldEqual 1905, 4, 1, 21, 52, 29
     @timeWidget.find('[data-action=decrementSeconds]').click()
     @dateShouldEqual 1905, 4, 1, 21, 52, 14
 

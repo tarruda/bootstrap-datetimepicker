@@ -52,6 +52,9 @@
       this.language = options.language in dates ? options.language : 'en'
       this.pickDate = options.pickDate;
       this.pickTime = options.pickTime;
+      this.hourStep = options.hourStep;
+      this.minuteStep = options.minuteStep;
+      this.secondStep = options.secondStep;
       this.isInput = this.$element.is('input');
       this.component = false;
       if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
@@ -639,27 +642,27 @@
 
     actions: {
       incrementHours: function(e) {
-        this._date.setUTCHours(this._date.getUTCHours() + 1);
+        this._date.setUTCHours(this._date.getUTCHours() + this.hourStep);
       },
 
       incrementMinutes: function(e) {
-        this._date.setUTCMinutes(this._date.getUTCMinutes() + 1);
+        this._date.setUTCMinutes(this._date.getUTCMinutes() + this.minuteStep);
       },
 
       incrementSeconds: function(e) {
-        this._date.setUTCSeconds(this._date.getUTCSeconds() + 1);
+        this._date.setUTCSeconds(this._date.getUTCSeconds() + this.secondStep);
       },
 
       decrementHours: function(e) {
-        this._date.setUTCHours(this._date.getUTCHours() - 1);
+        this._date.setUTCHours(this._date.getUTCHours() - this.hourStep);
       },
 
       decrementMinutes: function(e) {
-        this._date.setUTCMinutes(this._date.getUTCMinutes() - 1);
+        this._date.setUTCMinutes(this._date.getUTCMinutes() - this.minuteStep);
       },
 
       decrementSeconds: function(e) {
-        this._date.setUTCSeconds(this._date.getUTCSeconds() - 1);
+        this._date.setUTCSeconds(this._date.getUTCSeconds() - this.secondStep);
       },
 
       togglePeriod: function(e) {
@@ -1097,7 +1100,10 @@
     pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
-    collapse: true
+    collapse: true,
+    hourStep: 1,
+    minuteStep: 1,
+    secondStep: 1
   };
   $.fn.datetimepicker.Constructor = DateTimePicker;
   var dpgId = 0;
