@@ -54,8 +54,8 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
-      if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
-          this.component = this.$element.find('.add-on');
+      if (this.$element.find('.input-group'))
+        this.component = this.$element.find('.input-group-addon');
       this.format = options.format;
       if (!this.format) {
         if (this.isInput) this.format = this.$element.data('format');
@@ -68,12 +68,12 @@
       }
       if (this.pickTime) {
         if (icon && icon.length) this.timeIcon = icon.data('time-icon');
-        if (!this.timeIcon) this.timeIcon = 'icon-time';
+        if (!this.timeIcon) this.timeIcon = 'glyphicon glyphicon-time';
         icon.addClass(this.timeIcon);
       }
       if (this.pickDate) {
         if (icon && icon.length) this.dateIcon = icon.data('date-icon');
-        if (!this.dateIcon) this.dateIcon = 'icon-calendar';
+        if (!this.dateIcon) this.dateIcon = 'glyphicon glyphicon-calendar';
         icon.removeClass(this.timeIcon);
         icon.addClass(this.dateIcon);
       }
@@ -266,16 +266,16 @@
       offset.top = offset.top + this.height;
 
       var $window = $(window);
-      
+
       if ( this.options.width != undefined ) {
         this.widget.width( this.options.width );
       }
-      
+
       if ( this.options.orientation == 'left' ) {
         this.widget.addClass( 'left-oriented' );
         offset.left   = offset.left - this.widget.width() + 20;
       }
-      
+
       if (this._isInFixed()) {
         position = 'fixed';
         offset.top -= $window.scrollTop();
@@ -851,7 +851,7 @@
           else return 'AM';
 	} else if (property === 'UTCYear') {
           rv = d.getUTCFullYear();
-          rv = rv.toString().substr(2);   
+          rv = rv.toString().substr(2);
         } else {
           methodName = 'get' + property;
           rv = d[methodName]();
@@ -961,12 +961,12 @@
       this.widget.on('click', '[data-action]', $.proxy(this.doAction, this));
       this.widget.on('mousedown', $.proxy(this.stopEvent, this));
       if (this.pickDate && this.pickTime) {
-        this.widget.on('click.togglePicker', '.accordion-toggle', function(e) {
+        this.widget.on('click', '.accordion-toggle', function(e) {
           e.stopPropagation();
           var $this = $(this);
           var $parent = $this.closest('ul');
-          var expanded = $parent.find('.collapse.in');
-          var closed = $parent.find('.collapse:not(.in)');
+          var expanded = $parent.find('.in');
+          var closed = $parent.find('.collapse');
 
           if (expanded && expanded.length) {
             var collapseData = expanded.data('collapse');
@@ -974,7 +974,7 @@
             expanded.collapse('hide');
             closed.collapse('show')
             $this.find('i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
-            self.$element.find('.add-on i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
+            self.$element.find('.input-group-addon i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
           }
         });
       }
@@ -1151,7 +1151,7 @@
       return (
         '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
           '<ul>' +
-            '<li' + (collapse ? ' class="collapse in"' : '') + '>' +
+            '<li' + (collapse ? ' class="in"' : '') + '>' +
               '<div class="datepicker">' +
                 DPGlobal.template +
               '</div>' +
@@ -1252,12 +1252,12 @@
         (is12Hours ? ' data-hour-format="12"' : '') +
         '>' +
         '<tr>' +
-          '<td><a href="#" class="btn" data-action="incrementHours"><i class="icon-chevron-up"></i></a></td>' +
+          '<td><a href="#" class="btn btn-default" data-action="incrementHours"><i class="glyphicon glyphicon-chevron-up"></i></a></td>' +
           '<td class="separator"></td>' +
-          '<td><a href="#" class="btn" data-action="incrementMinutes"><i class="icon-chevron-up"></i></a></td>' +
+          '<td><a href="#" class="btn btn-default" data-action="incrementMinutes"><i class="glyphicon glyphicon-chevron-up"></i></a></td>' +
           (showSeconds ?
           '<td class="separator"></td>' +
-          '<td><a href="#" class="btn" data-action="incrementSeconds"><i class="icon-chevron-up"></i></a></td>': '')+
+          '<td><a href="#" class="btn btn-default" data-action="incrementSeconds"><i class="glyphicon glyphicon-chevron-up"></i></a></td>': '') +
           (is12Hours ? '<td class="separator"></td>' : '') +
         '</tr>' +
         '<tr>' +
@@ -1274,12 +1274,12 @@
           '</td>' : '') +
         '</tr>' +
         '<tr>' +
-          '<td><a href="#" class="btn" data-action="decrementHours"><i class="icon-chevron-down"></i></a></td>' +
+          '<td><a href="#" class="btn btn-default" data-action="decrementHours"><i class="glyphicon glyphicon-chevron-down"></i></a></td>' +
           '<td class="separator"></td>' +
-          '<td><a href="#" class="btn" data-action="decrementMinutes"><i class="icon-chevron-down"></i></a></td>' +
+          '<td><a href="#" class="btn btn-default" data-action="decrementHours"><i class="glyphicon glyphicon-chevron-down"></i></a></td>' +
           (showSeconds ?
           '<td class="separator"></td>' +
-          '<td><a href="#" class="btn" data-action="decrementSeconds"><i class="icon-chevron-down"></i></a></td>': '') +
+          '<td><a href="#" class="btn btn-default" data-action="decrementSeconds"><i class="glyphicon glyphicon-chevron-down"></i></a></td>': '') +
           (is12Hours ? '<td class="separator"></td>' : '') +
         '</tr>' +
       '</table>' +

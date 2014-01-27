@@ -24,11 +24,11 @@ if [ ! -r $jq ]; then
 fi
 bsjs=./test/bootstrap.js
 if [ ! -r $bsjs ]; then
-        wget http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js  -O $bsjs
+        wget http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js  -O $bsjs
 fi
 bscss=./test/bootstrap.css
 if [ ! -r $bscss ]; then
-        wget http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css -O $bscss
+        wget http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css -O $bscss
 fi
 cd ./test
 cat utils.coffee specs.coffee issues.coffee | \
