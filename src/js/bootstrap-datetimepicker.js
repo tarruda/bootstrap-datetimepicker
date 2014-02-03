@@ -1276,7 +1276,7 @@
         '<tr>' +
           '<td><a href="#" class="btn btn-default" data-action="decrementHours"><i class="glyphicon glyphicon-chevron-down"></i></a></td>' +
           '<td class="separator"></td>' +
-          '<td><a href="#" class="btn btn-default" data-action="decrementHours"><i class="glyphicon glyphicon-chevron-down"></i></a></td>' +
+          '<td><a href="#" class="btn btn-default" data-action="decrementMinutes"><i class="glyphicon glyphicon-chevron-down"></i></a></td>' +
           (showSeconds ?
           '<td class="separator"></td>' +
           '<td><a href="#" class="btn btn-default" data-action="decrementSeconds"><i class="glyphicon glyphicon-chevron-down"></i></a></td>': '') +
