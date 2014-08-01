@@ -1,0 +1,19 @@
+{
+    "name": "components/bootstrap-datetimepicker",
+    "type": "component",
+    "description": "Date/time picker widget based on twitter bootstrap",
+    "license": "Apache-2.0",
+    "require": {
+        "components/jquery": ">=1.8.3",
+        "components/bootstrap": ">=2.2.2 <3.0",
+        "robloach/component-installer": "*"
+    },
+    "extra": {
+        "component": {
+            "files": [
+                "build/js/bootstrap-datetimepicker.min.js",
+                "build/css/bootstrap-datetimepicker.min.css"
+            ]
+        }
+    }
+}
