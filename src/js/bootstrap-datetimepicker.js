@@ -137,11 +137,11 @@
     },
 
     disable: function(){
-          this.$element.find('input').prop('disabled',true);
+          this.$element.find('input').prop('readonly',true);
           this._detachDatePickerEvents();
     },
     enable: function(){
-          this.$element.find('input').prop('disabled',false);
+          this.$element.find('input').prop('readonly',false);
           this._attachDatePickerEvents();
     },
 
