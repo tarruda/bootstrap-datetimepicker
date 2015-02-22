@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="../../../build/css/bootstrap-datetimepicker.min.css">
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../../src/js/bootstrap-datetimepicker.js"></script> 
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../src/js/bootstrap-datetimepicker.js"></script>
   </head>
   <body><div class="container">
-    Datetimepicker: 
+    Datetimepicker:
     <div class="well">
-      <div id="datetimepicker1" class="input-append date">
-        <input data-format="dd/MM/yyyy hh:mm:ss" type="text"></input>
-        <span class="add-on">
-          <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+      <div id="datetimepicker1" class="input-group date">
+        <input data-format="dd/MM/yyyy hh:mm:ss" type="text" class="form-control"></input>
+        <span class="input-group-addon">
+          <i data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">
           </i>
         </span>
       </div>
@@ -21,7 +21,7 @@
     <script type="text/javascript">
       $(function() {
         $('#datetimepicker1').datetimepicker({
-          
+
         });
       });
     </script>

@@ -5,10 +5,10 @@ setupDateTimePicker = (opts) ->
     delete opts.value
   markup =
     """
-    <div id="datetimepicker" class="input-append date">
+    <div id="datetimepicker" class="input-group date">
       <input type="text" value="#{value}" data-format="MM/dd/yyyy hh:mm:ss ms">
-      <span class="add-on">
-        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      <span class="input-group-addon">
+        <i data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar"></i>
       </span>
     </div>
     """
@@ -18,7 +18,7 @@ setupDateTimePicker = (opts) ->
   return ->
     @component = $(markup).appendTo($ '#container').datetimepicker(opts)
     @input = @component.find 'input'
-    @addon = @component.find '.add-on'
+    @addon = @component.find '.input-group-addon'
     @picker = @component.data 'datetimepicker'
     @widget = $ 'body > .bootstrap-datetimepicker-widget'
     @dateWidget = @widget.find('.datepicker')
