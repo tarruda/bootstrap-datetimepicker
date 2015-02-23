@@ -181,7 +181,7 @@
     },
 
     setValue: function(newDate) {
-      if (!newDate) {
+      if (newDate===null || newDate===undefined) {
         this._unset = true;
       } else {
         this._unset = false;
