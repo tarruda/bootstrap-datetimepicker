@@ -166,6 +166,8 @@
 
     set: function() {
       var formatted = '';
+     if(!this.$element.find('input').attr('readonly'))
+     {
       if (!this._unset) formatted = this.formatDate(this._date);
       if (!this.isInput) {
         if (this.component){
@@ -178,6 +180,7 @@
         this.$element.val(formatted);
         this._resetMaskPos(this.$element);
       }
+     }
     },
 
     setValue: function(newDate) {
