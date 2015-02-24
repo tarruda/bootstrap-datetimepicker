@@ -31,8 +31,8 @@ describe 'datetimepicker', ->
 
   it 'does not hide widget when clicking inside it', ->
     @addon.click()
-    @widget.find('.datepicker .day:contains(18)').click()
-    expect(@widget.find('.datepicker .day:contains(18)').is '.active')
+    @widget.find('.datetimepicker .day:contains(18)').click()
+    expect(@widget.find('.datetimepicker .day:contains(18)').is '.active')
       .to.be.true
     expect(@widget.is ':visible').to.be.true
 
@@ -92,19 +92,19 @@ describe 'datetimepicker', ->
     # css3 transition effects to avoid waiting too much
     @widget.find('.collapse').addClass('no-transition')
     @addon.click()
-    expect(@widget.find('.datepicker').closest('.collapse').height())
+    expect(@widget.find('.datetimepicker').closest('.collapse').height())
       .to.not.equal 0
     expect(@widget.find('.timepicker').closest('.collapse').height())
       .to.equal 0
     @widget.find('.picker-switch a').click()
     @widget.one 'shown', =>
-      expect(@widget.find('.datepicker').closest('.collapse').height())
+      expect(@widget.find('.datetimepicker').closest('.collapse').height())
         .to.equal 0
       expect(@widget.find('.timepicker').closest('.collapse').height())
         .to.not.equal 0
       @widget.find('.picker-switch a').click()
       @widget.one 'shown', =>
-        expect(@widget.find('.datepicker').closest('.collapse').height())
+        expect(@widget.find('.datetimepicker').closest('.collapse').height())
           .to.not.equal 0
         expect(@widget.find('.timepicker').closest('.collapse').height())
           .to.equal 0

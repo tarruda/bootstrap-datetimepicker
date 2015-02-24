@@ -21,7 +21,7 @@ setupDateTimePicker = (opts) ->
     @addon = @component.find '.add-on'
     @picker = @component.data 'datetimepicker'
     @widget = $ 'body > .bootstrap-datetimepicker-widget'
-    @dateWidget = @widget.find('.datepicker')
+    @dateWidget = @widget.find('.datetimepicker')
     @timeWidget = @widget.find('.timepicker')
     @dateShouldEqual = =>
       expect(@picker.getDate().getTime()).to.equal(
