@@ -54,8 +54,9 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
+      this.componentSelector = options.componentSelector;
       if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
-          this.component = this.$element.find('.add-on');
+          this.component = this.$element.find(this.componentSelector);
       this.format = options.format;
       if (!this.format) {
         if (this.isInput) this.format = this.$element.data('format');
@@ -266,16 +267,16 @@
       offset.top = offset.top + this.height;
 
       var $window = $(window);
-      
+
       if ( this.options.width != undefined ) {
         this.widget.width( this.options.width );
       }
-      
+
       if ( this.options.orientation == 'left' ) {
         this.widget.addClass( 'left-oriented' );
         offset.left   = offset.left - this.widget.width() + 20;
       }
-      
+
       if (this._isInFixed()) {
         position = 'fixed';
         offset.top -= $window.scrollTop();
@@ -974,7 +975,7 @@
             expanded.collapse('hide');
             closed.collapse('show')
             $this.find('i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
-            self.$element.find('.add-on i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
+            self.$element.find(this.componentSelector + ' i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
           }
         });
       }
@@ -1097,7 +1098,8 @@
     pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
-    collapse: true
+    collapse: true,
+    componentSelector: '.add-on'
   };
   $.fn.datetimepicker.Constructor = DateTimePicker;
   var dpgId = 0;

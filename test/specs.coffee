@@ -341,3 +341,28 @@ describe 'datetimepicker with pickSeconds = false', ->
     expect(@timeWidget.find('[data-action=decrementSeconds]').length).to.equal 0
     expect(@timeWidget.find('.timepicker-second').length) .to.equal 0
 
+describe 'datetimepicker with componentSelector = ".btn-calendar"', ->
+
+  beforeEach setupDateTimePicker({
+    componentSelector: '.btn-calendar'
+    markup:
+      """
+      <div id="datetimepicker" class="input-append date">
+        <input type="text" value="05/01/1905 05:55" data-format="MM/dd/yyyy hh:mm">
+        <buttom class="btn btn-calendar">
+          <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+        </buttom>
+      </div>
+      """
+  })
+
+  afterEach teardownDateTimePicker()
+
+  it 'pops up the widget when icon is clicked', ->
+    @addon.click()
+    expect(@widget.is ':visible').to.be.true
+
+  it 'hides the widget when clicking outside it', ->
+    @addon.click()
+    $('#mocha').mousedown()
+    expect(@widget.is ':hidden').to.be.true

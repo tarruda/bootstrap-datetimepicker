@@ -15,10 +15,13 @@ setupDateTimePicker = (opts) ->
   if opts?.markup
     markup = opts.markup
     delete opts.markup
+  componentSelector = '.add-on'
+  if opts?.componentSelector
+    componentSelector = opts.componentSelector
   return ->
     @component = $(markup).appendTo($ '#container').datetimepicker(opts)
     @input = @component.find 'input'
-    @addon = @component.find '.add-on'
+    @addon = @component.find componentSelector
     @picker = @component.data 'datetimepicker'
     @widget = $ 'body > .bootstrap-datetimepicker-widget'
     @dateWidget = @widget.find('.datepicker')
