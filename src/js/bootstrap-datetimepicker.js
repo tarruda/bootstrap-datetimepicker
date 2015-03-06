@@ -211,7 +211,7 @@
       if (date instanceof Date) {
         this.startDate = date;
       } else if (typeof date === 'string') {
-        this.startDate = new UTCDate(date);
+        this.startDate = this.parseDate(date);
         if (! this.startDate.getUTCFullYear()) {
           this.startDate = -Infinity;
         }
@@ -227,7 +227,7 @@
       if (date instanceof Date) {
         this.endDate = date;
       } else if (typeof date === 'string') {
-        this.endDate = new UTCDate(date);
+        this.endDate = this.parseDate(date);
         if (! this.endDate.getUTCFullYear()) {
           this.endDate = Infinity;
         }
