@@ -162,6 +162,12 @@
         date: this._date
       });
       this._detachDatePickerGlobalEvents();
+      if (!this.isInput) {
+        if (this.component){
+          var input = this.$element.find('input');
+				 $('#'+input.attr('id')).change();
+        }
+      }
     },
 
     set: function() {
