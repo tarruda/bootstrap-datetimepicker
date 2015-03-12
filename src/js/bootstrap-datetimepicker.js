@@ -263,7 +263,7 @@
       var position = 'absolute';
       var offset = this.component ? this.component.offset() : this.$element.offset();
       this.width = this.component ? this.component.outerWidth() : this.$element.outerWidth();
-      offset.top = offset.top + this.height;
+      offset.top = offset.top + this.height.context.offsetHeight;
 
       var $window = $(window);
       
