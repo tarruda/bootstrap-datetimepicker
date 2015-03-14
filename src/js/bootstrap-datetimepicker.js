@@ -27,7 +27,7 @@
 (function($) {
 
   // Picker object
-  var smartPhone = (window.orientation != undefined);
+  var smartPhone = (window.orientation !== undefined);
   var DateTimePicker = function(element, options) {
     this.id = dpgId++;
     this.init(element, options);
@@ -49,7 +49,7 @@
         throw new Error('Must choose at least one picker');
       this.options = options;
       this.$element = $(element);
-      this.language = options.language in dates ? options.language : 'en'
+      this.language = options.language in dates ? options.language : 'en';
       this.pickDate = options.pickDate;
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
@@ -125,10 +125,11 @@
       this.widget.show();
       this.height = this.component ? this.component.outerHeight() : this.$element.outerHeight();
       this.place();
-      this.$element.trigger({
-        type: 'show',
-        date: this._date
-      });
+      this.$element.trigger($.Event(
+        'show', {
+          date: this._date
+        }
+      ));
       this._attachDatePickerGlobalEvents();
       if (e) {
         e.stopPropagation();
@@ -147,7 +148,7 @@
 
     hide: function() {
       // Ignore event if in the middle of a picker transition
-      var collapse = this.widget.find('.collapse')
+      var collapse = this.widget.find('.collapse');
       for (var i = 0; i < collapse.length; i++) {
         var collapseData = collapse.eq(i).data('collapse');
         if (collapseData && collapseData.transitioning)
@@ -157,10 +158,11 @@
       this.viewMode = this.startViewMode;
       this.showMode();
       this.set();
-      this.$element.trigger({
-        type: 'hide',
-        date: this._date
-      });
+      this.$element.trigger($.Event(
+        'hide', {
+          date: this._date
+        }
+      ));
       this._detachDatePickerGlobalEvents();
     },
 
@@ -267,7 +269,7 @@
 
       var $window = $(window);
       
-      if ( this.options.width != undefined ) {
+      if ( this.options.width !== undefined ) {
         this.widget.width( this.options.width );
       }
       
@@ -300,11 +302,12 @@
     },
 
     notifyChange: function(){
-      this.$element.trigger({
-        type: 'changeDate',
-        date: this.getDate(),
-        localDate: this.getLocalDate()
-      });
+      this.$element.trigger($.Event(
+        'changeDate',{
+          date: this.getDate(),
+          localDate: this.getLocalDate()
+        })
+      );
     },
 
     update: function(newDate){
@@ -319,14 +322,14 @@
           this._date = this.parseDate(dateStr);
         }
         if (!this._date) {
-          var tmp = new Date()
+          var tmp = new Date();
           this._date = UTCDate(tmp.getFullYear(),
                               tmp.getMonth(),
                               tmp.getDate(),
                               tmp.getHours(),
                               tmp.getMinutes(),
                               tmp.getSeconds(),
-                              tmp.getMilliseconds())
+                              tmp.getMilliseconds());
         }
       }
       this.viewDate = UTCDate(this._date.getUTCFullYear(), this._date.getUTCMonth(), 1, 0, 0, 0, 0);
@@ -345,7 +348,7 @@
 
     fillMonths: function() {
       var html = '';
-      var i = 0
+      var i = 0;
       while (i < 12) {
         html += '<span class="month">' + dates[this.language].monthsShort[i++] + '</span>';
       }
@@ -370,7 +373,7 @@
       this.widget.find('.datepicker-months').find('.disabled').removeClass('disabled');
       this.widget.find('.datepicker-years').find('.disabled').removeClass('disabled');
 
-      this.widget.find('.datepicker-days th:eq(1)').text(
+      this.widget.find('.datepicker-days th').eq(1).text(
         dates[this.language].months[month] + ' ' + year);
 
       var prevMonth = UTCDate(year, month-1, 28, 0, 0, 0, 0);
@@ -379,10 +382,10 @@
       prevMonth.setUTCDate(day);
       prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7) % 7);
       if ((year == startYear && month <= startMonth) || year < startYear) {
-        this.widget.find('.datepicker-days th:eq(0)').addClass('disabled');
+        this.widget.find('.datepicker-days th').eq(0).addClass('disabled');
       }
       if ((year == endYear && month >= endMonth) || year > endYear) {
-        this.widget.find('.datepicker-days th:eq(2)').addClass('disabled');
+        this.widget.find('.datepicker-days th').eq(2).addClass('disabled');
       }
 
       var nextMonth = new Date(prevMonth.valueOf());
@@ -418,21 +421,25 @@
         row.append('<td class="day' + clsName + '">' + prevMonth.getUTCDate() + '</td>');
         prevMonth.setUTCDate(prevMonth.getUTCDate() + 1);
       }
-      this.widget.find('.datepicker-days tbody').empty().append(html);
+      var tbody = this.widget.find('.datepicker-days tbody').empty();
+      for (var i=0; i < html.length; i++)
+        tbody.append(html[i]);
       var currentYear = this._date.getUTCFullYear();
 
-      var months = this.widget.find('.datepicker-months').find(
-        'th:eq(1)').text(year).end().find('span').removeClass('active');
+      var months = this.widget.find('.datepicker-months');
+      months.find('th').eq(1).text(year);
+      months = months.find('span').removeClass('active');
+
       if (currentYear === year) {
         months.eq(this._date.getUTCMonth()).addClass('active');
       }
       if (currentYear - 1 < startYear) {
-        this.widget.find('.datepicker-months th:eq(0)').addClass('disabled');
+        this.widget.find('.datepicker-months th').eq(0).addClass('disabled');
       }
       if (currentYear + 1 > endYear) {
-        this.widget.find('.datepicker-months th:eq(2)').addClass('disabled');
+        this.widget.find('.datepicker-months th').eq(2).addClass('disabled');
       }
-      for (var i = 0; i < 12; i++) {
+      for (i = 0; i < 12; i++) {
         if ((year == startYear && startMonth > i) || (year < startYear)) {
           $(months[i]).addClass('disabled');
         } else if ((year == endYear && endMonth < i) || (year > endYear)) {
@@ -442,17 +449,18 @@
 
       html = '';
       year = parseInt(year/10, 10) * 10;
-      var yearCont = this.widget.find('.datepicker-years').find(
-        'th:eq(1)').text(year + '-' + (year + 9)).end().find('td');
+      var yearCont = this.widget.find('.datepicker-years');
+      yearCont.find('th').eq(1).text(year + '-' + (year + 9));
+      yearCont = yearCont.find('td');
       this.widget.find('.datepicker-years').find('th').removeClass('disabled');
       if (startYear > year) {
-        this.widget.find('.datepicker-years').find('th:eq(0)').addClass('disabled');
+        this.widget.find('.datepicker-years').find('th').eq(0).addClass('disabled');
       }
       if (endYear < year+9) {
-        this.widget.find('.datepicker-years').find('th:eq(2)').addClass('disabled');
+        this.widget.find('.datepicker-years').find('th').eq(2).addClass('disabled');
       }
       year -= 1;
-      for (var i = -1; i < 11; i++) {
+      for (i = -1; i < 11; i++) {
         html += '<span class="year' + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + ((year < startYear || year > endYear) ? ' disabled' : '') + '">' + year + '</span>';
         year += 1;
       }
@@ -461,30 +469,31 @@
 
     fillHours: function() {
       var table = this.widget.find(
-        '.timepicker .timepicker-hours table');
+        '.timepicker .timepicker-hours table'),
+        i,j,c,current;
       table.parent().hide();
       var html = '';
       if (this.options.pick12HourFormat) {
-        var current = 1;
-        for (var i = 0; i < 3; i += 1) {
+        current = 1;
+        for (i = 0; i < 3; i += 1) {
           html += '<tr>';
-          for (var j = 0; j < 4; j += 1) {
-             var c = current.toString();
+          for (j = 0; j < 4; j += 1) {
+             c = current.toString();
              html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
              current++;
           }
-          html += '</tr>'
+          html += '</tr>';
         }
       } else {
-        var current = 0;
-        for (var i = 0; i < 6; i += 1) {
+        current = 0;
+        for (i = 0; i < 6; i += 1) {
           html += '<tr>';
-          for (var j = 0; j < 4; j += 1) {
-             var c = current.toString();
+          for (j = 0; j < 4; j += 1) {
+             c = current.toString();
              html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
              current++;
           }
-          html += '</tr>'
+          html += '</tr>';
         }
       }
       table.html(html);
@@ -553,7 +562,7 @@
       e.stopPropagation();
       e.preventDefault();
       this._unset = false;
-      var target = $(e.target).closest('span, td, th');
+      var target = $(e.target).closest('span, td, th'), year, month;
       if (target.length === 1) {
         if (! target.is('.disabled')) {
           switch(target[0].nodeName.toLowerCase()) {
@@ -576,10 +585,10 @@
               break;
             case 'span':
               if (target.is('.month')) {
-                var month = target.parent().find('span').index(target);
+                month = target.parent().find('span').index(target);
                 this.viewDate.setUTCMonth(month);
               } else {
-                var year = parseInt(target.text(), 10) || 0;
+                year = parseInt(target.text(), 10) || 0;
                 this.viewDate.setUTCFullYear(year);
               }
               if (this.viewMode !== 0) {
@@ -601,8 +610,8 @@
             case 'td':
               if (target.is('.day')) {
                 var day = parseInt(target.text(), 10) || 1;
-                var month = this.viewDate.getUTCMonth();
-                var year = this.viewDate.getUTCFullYear();
+                month = this.viewDate.getUTCMonth();
+                year = this.viewDate.getUTCFullYear();
                 if (target.is('.old')) {
                   if (month === 0) {
                     month = 11;
@@ -841,7 +850,7 @@
         var methodName, property, rv, len = match.length;
         if (match === 'ms')
           len = 1;
-        property = dateFormatComponents[match].property
+        property = dateFormatComponents[match].property;
         if (property === 'Hours12') {
           rv = d.getUTCHours();
           if (rv === 0) rv = 12;
@@ -920,7 +929,7 @@
     _compileFormat: function () {
       var match, component, components = [], mask = [],
       str = this.format, propertiesByIndex = {}, i = 0, pos = 0;
-      while (match = formatComponent.exec(str)) {
+      while((match = formatComponent.exec(str))) {
         component = match[0];
         if (component in dateFormatComponents) {
           i++;
@@ -972,7 +981,7 @@
             var collapseData = expanded.data('collapse');
             if (collapseData && collapseData.transitioning) return;
             expanded.collapse('hide');
-            closed.collapse('show')
+            closed.collapse('show');
             $this.find('i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
             self.$element.find('.add-on i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
           }
@@ -1068,7 +1077,7 @@
                 inFixed = true;
                 break;
             }
-        };
+        }
         return inFixed;
       } else {
         return false;
@@ -1117,7 +1126,7 @@
   var dateFormatComponents = {
     dd: {property: 'UTCDate', getPattern: function() { return '(0?[1-9]|[1-2][0-9]|3[0-1])\\b';}},
     MM: {property: 'UTCMonth', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
-    yy: {property: 'UTCYear', getPattern: function() {return '(\\d{2})\\b'}},
+    yy: {property: 'UTCYear', getPattern: function() {return '(\\d{2})\\b';}},
     yyyy: {property: 'UTCFullYear', getPattern: function() {return '(\\d{4})\\b';}},
     hh: {property: 'UTCHours', getPattern: function() {return '(0?[0-9]|1[0-9]|2[0-3])\\b';}},
     mm: {property: 'UTCMinutes', getPattern: function() {return '(0?[0-9]|[1-5][0-9])\\b';}},
@@ -1206,10 +1215,10 @@
       navStep: 10
     }],
     isLeapYear: function (year) {
-      return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
+      return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
     },
     getDaysInMonth: function (year, month) {
-      return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
+      return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
     },
     headTemplate:
       '<thead>' +
@@ -1298,7 +1307,7 @@
       '</table>'+
     '</div>': '')
     );
-  }
+  };
 
 
-})(window.jQuery)
+})(window.jQuery || window.Zepto);
