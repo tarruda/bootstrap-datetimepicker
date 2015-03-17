@@ -43,6 +43,14 @@
   DateTimePicker.prototype = {
     constructor: DateTimePicker,
 
+    getTargetEls: function () {
+      if (this.options.targetEls.jquery) {
+        return this.options.targetEls
+      } else {
+        return this.$element.find(this.options.targetEls)
+      }
+    },
+
     init: function(element, options) {
       var icon;
       if (!(options.pickTime || options.pickDate))
@@ -137,11 +145,11 @@
     },
 
     disable: function(){
-          this.$element.find('input').prop('disabled',true);
+          this.getTargetEls().prop('disabled',true);
           this._detachDatePickerEvents();
     },
     enable: function(){
-          this.$element.find('input').prop('disabled',false);
+          this.getTargetEls().prop('disabled',false);
           this._attachDatePickerEvents();
     },
 
@@ -169,7 +177,7 @@
       if (!this._unset) formatted = this.formatDate(this._date);
       if (!this.isInput) {
         if (this.component){
-          var input = this.$element.find('input');
+          var input = this.getTargetEls();
           input.val(formatted);
           this._resetMaskPos(input);
         }
@@ -313,7 +321,7 @@
         if (this.isInput) {
           dateStr = this.$element.val();
         } else {
-          dateStr = this.$element.find('input').val();
+          dateStr = this.getTargetEls().val();
         }
         if (dateStr) {
           this._date = this.parseDate(dateStr);
@@ -990,14 +998,14 @@
           });
         }
       } else {
-        this.$element.on({
+        this.getTargetEls().on({
           'change': $.proxy(this.change, this)
-        }, 'input');
+        });
         if (this.options.maskInput) {
-          this.$element.on({
+          this.getTargetEls().on({
             'keydown': $.proxy(this.keydown, this),
             'keypress': $.proxy(this.keypress, this)
-          }, 'input');
+          });
         }
         if (this.component){
           this.component.on('click', $.proxy(this.show, this));
@@ -1035,11 +1043,11 @@
           });
         }
       } else {
-        this.$element.off({
+        this.getTargetEls().off({
           'change': this.change
-        }, 'input');
+        });
         if (this.options.maskInput) {
-          this.$element.off({
+          this.getTargetEls().off({
             'keydown': this.keydown,
             'keypress': this.keypress
           }, 'input');
@@ -1097,7 +1105,8 @@
     pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
-    collapse: true
+    collapse: true,
+    targetEls: 'input'
   };
   $.fn.datetimepicker.Constructor = DateTimePicker;
   var dpgId = 0;
