@@ -158,7 +158,7 @@
       this.showMode();
       this.set();
       this.$element.trigger({
-        type: 'hide',
+        type: 'hidden',
         date: this._date
       });
       this._detachDatePickerGlobalEvents();
