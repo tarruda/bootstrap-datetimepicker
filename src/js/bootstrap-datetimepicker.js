@@ -307,6 +307,13 @@
       });
     },
 
+    notifyError: function(val){
+      this.$element.trigger({
+        type: 'changeError',
+        val: val
+      });
+    },
+    
     update: function(newDate){
       var dateStr = newDate;
       if (!dateStr) {
@@ -807,6 +814,7 @@
         this.setValue(this._date.getTime());
         if (this._date) this.set();
         else input.val('');
+        this.notifyError(val);
       } else {
         if (this._date) {
           this.setValue(null);
