@@ -54,6 +54,7 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
+      this.showTimeFirst = options.showTimeFirst;
       if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
           this.component = this.$element.find('.add-on');
       this.format = options.format;
@@ -69,15 +70,16 @@
       if (this.pickTime) {
         if (icon && icon.length) this.timeIcon = icon.data('time-icon');
         if (!this.timeIcon) this.timeIcon = 'icon-time';
+        if (!this.dateIcon) this.dateIcon = 'icon-calendar';
         icon.addClass(this.timeIcon);
       }
-      if (this.pickDate) {
+      if (this.pickDate && (!this.showTimeFirst)) {
         if (icon && icon.length) this.dateIcon = icon.data('date-icon');
         if (!this.dateIcon) this.dateIcon = 'icon-calendar';
         icon.removeClass(this.timeIcon);
         icon.addClass(this.dateIcon);
       }
-      this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds, options.collapse)).appendTo('body');
+      this.widget = $(getTemplate(this.timeIcon, this.dateIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds, options.collapse, options.showTimeFirst)).appendTo('body');
       this.minViewMode = options.minViewMode||this.$element.data('date-minviewmode')||0;
       if (typeof this.minViewMode === 'string') {
         switch (this.minViewMode) {
@@ -1097,7 +1099,8 @@
     pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
-    collapse: true
+    collapse: true,
+    showTimeFirst: false
   };
   $.fn.datetimepicker.Constructor = DateTimePicker;
   var dpgId = 0;
@@ -1146,18 +1149,18 @@
     else return Array(l - s.length + 1).join(c || ' ') + s;
   }
 
-  function getTemplate(timeIcon, pickDate, pickTime, is12Hours, showSeconds, collapse) {
+  function getTemplate(timeIcon, dateIcon, pickDate, pickTime, is12Hours, showSeconds, collapse, showTimeFirst) {
     if (pickDate && pickTime) {
       return (
         '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
           '<ul>' +
-            '<li' + (collapse ? ' class="collapse in"' : '') + '>' +
+            '<li' + (collapse ? ' class="collapse ' + (!showTimeFirst ? 'in' : '' ) + '"' : '') + '>' +
               '<div class="datepicker">' +
                 DPGlobal.template +
               '</div>' +
             '</li>' +
-            '<li class="picker-switch accordion-toggle"><a><i class="' + timeIcon + '"></i></a></li>' +
-            '<li' + (collapse ? ' class="collapse"' : '') + '>' +
+            '<li class="picker-switch accordion-toggle"><a><i class="' + (showTimeFirst ? dateIcon : timeIcon) + '"></i></a></li>' +
+            '<li' + (collapse ? ' class="collapse ' + (showTimeFirst ? 'in' : '' ) + '"' : '') + '>' +
               '<div class="timepicker">' +
                 TPGlobal.getTemplate(is12Hours, showSeconds) +
               '</div>' +
