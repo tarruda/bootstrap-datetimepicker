@@ -752,9 +752,9 @@
 
     keypress: function(e) {
       var k = e.which;
-      if (k == 8 || k == 46) {
+      if (k == 8 || k == 46 || e.keyCode == 9) {
         // For those browsers which will trigger
-        // keypress on backspace/delete
+        // keypress on backspace/delete or tab
         return;
       }
       var input = $(e.target);
