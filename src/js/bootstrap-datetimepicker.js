@@ -1301,4 +1301,4 @@
   }
 
 
-})(window.jQuery)
+})(window.jQuery);
