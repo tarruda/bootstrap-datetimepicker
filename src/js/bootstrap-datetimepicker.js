@@ -44,7 +44,7 @@
     constructor: DateTimePicker,
 
     init: function(element, options) {
-      var icon;
+      var icon = false;
       if (!(options.pickTime || options.pickDate))
         throw new Error('Must choose at least one picker');
       this.options = options;
@@ -54,7 +54,7 @@
       this.pickTime = options.pickTime;
       this.isInput = this.$element.is('input');
       this.component = false;
-      if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
+      if (this.$element.find('.input-append').length > 0 || this.$element.find('.input-prepend').length > 0)
           this.component = this.$element.find('.add-on');
       this.format = options.format;
       if (!this.format) {
@@ -69,13 +69,13 @@
       if (this.pickTime) {
         if (icon && icon.length) this.timeIcon = icon.data('time-icon');
         if (!this.timeIcon) this.timeIcon = 'icon-time';
-        icon.addClass(this.timeIcon);
+        if(icon) icon.addClass(this.timeIcon);
       }
       if (this.pickDate) {
         if (icon && icon.length) this.dateIcon = icon.data('date-icon');
         if (!this.dateIcon) this.dateIcon = 'icon-calendar';
-        icon.removeClass(this.timeIcon);
-        icon.addClass(this.dateIcon);
+        if(icon) icon.removeClass(this.timeIcon);
+        if(icon) icon.addClass(this.dateIcon);
       }
       this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds, options.collapse)).appendTo('body');
       this.minViewMode = options.minViewMode||this.$element.data('date-minviewmode')||0;
@@ -266,16 +266,16 @@
       offset.top = offset.top + this.height;
 
       var $window = $(window);
-      
+
       if ( this.options.width != undefined ) {
         this.widget.width( this.options.width );
       }
-      
+
       if ( this.options.orientation == 'left' ) {
         this.widget.addClass( 'left-oriented' );
         offset.left   = offset.left - this.widget.width() + 20;
       }
-      
+
       if (this._isInFixed()) {
         position = 'fixed';
         offset.top -= $window.scrollTop();
@@ -1010,10 +1010,8 @@
     _attachDatePickerGlobalEvents: function() {
       $(window).on(
         'resize.datetimepicker' + this.id, $.proxy(this.place, this));
-      if (!this.isInput) {
         $(document).on(
           'mousedown.datetimepicker' + this.id, $.proxy(this.hide, this));
-      }
     },
 
     _detachDatePickerEvents: function() {
