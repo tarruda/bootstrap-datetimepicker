@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Bootstrap.DateTimePicker</id>
+    <title>bootstrap-datetimepicker</title>
+    <version>0.0.20130430</version>
+    <authors>tarruda, Stefan Petre, Andrew Rowls, jdewit</authors>
+    <owners>Brian Lachniet</owners>
+    <licenseUrl>https://github.com/tarruda/bootstrap-datetimepicker/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://tarruda.github.io/bootstrap-datetimepicker/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Date/time picker widget based on twitter bootstrap</description>
+    <releaseNotes>
+Fixed NuGet package issues.
+
+ - Stylesheet: Added missing css +Fix
+ - Removed unnecessary files from package (nuget.exe, readme, cmd) +Changed
+    </releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>bootstrap date time picker</tags>
+    <dependencies>
+        <dependency id="Twitter.Bootstrap" />
+    </dependencies>
+  </metadata>
+</package>
