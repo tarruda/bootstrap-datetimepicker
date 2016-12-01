@@ -52,6 +52,7 @@
       this.language = options.language in dates ? options.language : 'en'
       this.pickDate = options.pickDate;
       this.pickTime = options.pickTime;
+      this.pickDateAndTimeIndependently = options.pickDateAndTimeIndependently;
       this.isInput = this.$element.is('input');
       this.component = false;
       if (this.$element.find('.input-append') || this.$element.find('.input-prepend'))
@@ -66,16 +67,22 @@
       if (this.component) {
         icon = this.component.find('i');
       }
-      if (this.pickTime) {
-        if (icon && icon.length) this.timeIcon = icon.data('time-icon');
-        if (!this.timeIcon) this.timeIcon = 'icon-time';
-        icon.addClass(this.timeIcon);
-      }
-      if (this.pickDate) {
-        if (icon && icon.length) this.dateIcon = icon.data('date-icon');
-        if (!this.dateIcon) this.dateIcon = 'icon-calendar';
-        icon.removeClass(this.timeIcon);
-        icon.addClass(this.dateIcon);
+      if (this.pickDateAndTimeIndependently) {
+        $(icon[0]).addClass('icon-calendar');
+        $(icon[1]).addClass('icon-time');
+        this.timeWidget = $(getTemplate('icon-time', false, true, options.pick12HourFormat, options.pickSeconds)).appendTo('body');
+      } else {
+        if (this.pickTime) {
+          if (icon && icon.length) this.timeIcon = icon.data('time-icon');
+          if (!this.timeIcon) this.timeIcon = 'icon-time';
+          icon.addClass(this.timeIcon);
+        }
+        if (this.pickDate) {
+          if (icon && icon.length) this.dateIcon = icon.data('date-icon');
+          if (!this.dateIcon) this.dateIcon = 'icon-calendar';
+          icon.removeClass(this.timeIcon);
+          icon.addClass(this.dateIcon);
+        }
       }
       this.widget = $(getTemplate(this.timeIcon, options.pickDate, options.pickTime, options.pick12HourFormat, options.pickSeconds, options.collapse)).appendTo('body');
       this.minViewMode = options.minViewMode||this.$element.data('date-minviewmode')||0;
@@ -118,11 +125,16 @@
       this.fillSeconds();
       this.update();
       this.showMode();
-      this._attachDatePickerEvents();
+      this._attachDatePickerEvents(this.widget);
+      this._attachDatePickerEvents(this.timeWidget);
     },
 
     show: function(e) {
-      this.widget.show();
+      if ($(e.srcElement).data('time-icon')) {
+        this.timeWidget.show();
+      } else {
+        this.widget.show();
+      }
       this.height = this.component ? this.component.outerHeight() : this.$element.outerHeight();
       this.place();
       this.$element.trigger({
@@ -153,7 +165,9 @@
         if (collapseData && collapseData.transitioning)
           return;
       }
+      this.timeWidget.hide();
       this.widget.hide();
+
       this.viewMode = this.startViewMode;
       this.showMode();
       this.set();
@@ -297,6 +311,10 @@
         left: offset.left,
         right: offset.right
       });
+      this.timeWidget.css({
+          top: offset.top + this.height,
+          left: offset.left + 27
+        });
     },
 
     notifyChange: function(){
@@ -460,8 +478,9 @@
     },
 
     fillHours: function() {
-      var table = this.widget.find(
-        '.timepicker .timepicker-hours table');
+      var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+      var table = w.find('.timepicker .timepicker-hours table');
+
       table.parent().hide();
       var html = '';
       if (this.options.pick12HourFormat) {
@@ -491,8 +510,9 @@
     },
 
     fillMinutes: function() {
-      var table = this.widget.find(
-        '.timepicker .timepicker-minutes table');
+      var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+      var table = w.find('.timepicker .timepicker-minutes table');
+
       table.parent().hide();
       var html = '';
       var current = 0;
@@ -509,8 +529,9 @@
     },
 
     fillSeconds: function() {
-      var table = this.widget.find(
-        '.timepicker .timepicker-seconds table');
+      var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+      var table = w.find('.timepicker .timepicker-seconds table');
+
       table.parent().hide();
       var html = '';
       var current = 0;
@@ -529,7 +550,9 @@
     fillTime: function() {
       if (!this._date)
         return;
-      var timeComponents = this.widget.find('.timepicker span[data-time-component]');
+      var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+      var timeComponents = w.find('.timepicker span[data-time-component]');
+
       var table = timeComponents.closest('table');
       var is12HourFormat = this.options.pick12HourFormat;
       var hour = this._date.getUTCHours();
@@ -538,8 +561,7 @@
         if (hour >= 12) period = 'PM';
         if (hour === 0) hour = 12;
         else if (hour != 12) hour = hour % 12;
-        this.widget.find(
-          '.timepicker [data-action=togglePeriod]').text(period);
+        w.find('.timepicker [data-action=togglePeriod]').text(period);
       }
       hour = padLeft(hour.toString(), 2, '0');
       var minute = padLeft(this._date.getUTCMinutes().toString(), 2, '0');
@@ -670,23 +692,27 @@
       },
 
       showPicker: function() {
-        this.widget.find('.timepicker > div:not(.timepicker-picker)').hide();
-        this.widget.find('.timepicker .timepicker-picker').show();
+        var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+        w.find('.timepicker > div:not(.timepicker-picker)').hide();
+        w.find('.timepicker .timepicker-picker').show();
       },
 
       showHours: function() {
-        this.widget.find('.timepicker .timepicker-picker').hide();
-        this.widget.find('.timepicker .timepicker-hours').show();
+        var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+        w.find('.timepicker .timepicker-picker').hide();
+        w.find('.timepicker .timepicker-hours').show();
       },
 
       showMinutes: function() {
-        this.widget.find('.timepicker .timepicker-picker').hide();
-        this.widget.find('.timepicker .timepicker-minutes').show();
+        var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+        w.find('.timepicker .timepicker-picker').hide();
+        w.find('.timepicker .timepicker-minutes').show();
       },
 
       showSeconds: function() {
-        this.widget.find('.timepicker .timepicker-picker').hide();
-        this.widget.find('.timepicker .timepicker-seconds').show();
+        var w = this.options.pickDateAndTimeIndependently ? this.timeWidget : this.widget;
+        w.find('.timepicker .timepicker-picker').hide();
+        w.find('.timepicker .timepicker-seconds').show();
       },
 
       selectHour: function(e) {
@@ -832,6 +858,7 @@
       this._detachDatePickerEvents();
       this._detachDatePickerGlobalEvents();
       this.widget.remove();
+      this.timeWidget.remove();
       this.$element.removeData('datetimepicker');
       this.component.removeData('datetimepicker');
     },
@@ -953,15 +980,18 @@
       this._propertiesByIndex = propertiesByIndex;
     },
 
-    _attachDatePickerEvents: function() {
+    _attachDatePickerEvents: function(picker) {
       var self = this;
+      w = picker ? picker : this.widget;
+
       // this handles date picker clicks
-      this.widget.on('click', '.datepicker *', $.proxy(this.click, this));
+      w.on('click', '.datepicker *', $.proxy(this.click, this));
       // this handles time picker clicks
-      this.widget.on('click', '[data-action]', $.proxy(this.doAction, this));
-      this.widget.on('mousedown', $.proxy(this.stopEvent, this));
+      w.on('click', '[data-action]', $.proxy(this.doAction, this));
+      w.on('mousedown', $.proxy(this.stopEvent, this));
+
       if (this.pickDate && this.pickTime) {
-        this.widget.on('click.togglePicker', '.accordion-toggle', function(e) {
+        w.on('click.togglePicker', '.accordion-toggle', function(e) {
           e.stopPropagation();
           var $this = $(this);
           var $parent = $this.closest('ul');
@@ -1016,12 +1046,13 @@
       }
     },
 
-    _detachDatePickerEvents: function() {
-      this.widget.off('click', '.datepicker *', this.click);
-      this.widget.off('click', '[data-action]');
-      this.widget.off('mousedown', this.stopEvent);
+    _detachDatePickerEvents: function(picker) {
+      var w = picker ? picker : this.widget;
+      w.off('click', '.datepicker *', this.click);
+      w.off('click', '[data-action]');
+      w.off('mousedown', this.stopEvent);
       if (this.pickDate && this.pickTime) {
-        this.widget.off('click.togglePicker');
+        w.off('click.togglePicker');
       }
       if (this.isInput) {
         this.$element.off({
@@ -1095,6 +1126,7 @@
     pickTime: true,
     pick12HourFormat: false,
     pickSeconds: true,
+    pickDateAndTimeIndependently: false,
     startDate: -Infinity,
     endDate: Infinity,
     collapse: true
